@@ -2,7 +2,8 @@ var gulp = require('gulp'),
     browserify = require('browserify'),
     source = require('vinyl-source-stream'),
     gutil = require('gulp-util'),
-    babelify = require('babelify');
+    babelify = require('babelify'),
+    sass = require('gulp-sass');
     
 var dependencies = [
     'react',
@@ -17,12 +18,18 @@ gulp.task('scripts', function() {
     bundleApp(false);
 });
 
+gulp.task('styles', function() {
+   gulp.src('sass/*.scss')
+    .pipe(sass().on('error', sass.logError))
+    .pipe(gulp.dest('public/'));
+});
+
 gulp.task('deploy', function() {
     bundleApp(true);
 });
 
 gulp.task('watch', function() {
-    gulp.watch(['./app/*.js'], ['scripts']);
+    gulp.watch(['./app/*.js', './sass/*.scss'], ['scripts', 'styles']);
 });
 
 gulp.task('default', ['scripts', 'watch']);

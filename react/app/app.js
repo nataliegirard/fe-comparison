@@ -34,10 +34,10 @@ class ContactList extends React.Component {
         });
         return(
             <section>
-                <div class="actions">
-                    <Link to="/contacts/new">New Contact</Link>
+                <div className="actions">
+                    <Link className="btn-primary" to="/contacts/new">New Contact</Link>
                 </div>
-                <ul>
+                <ul className="contact-list">
                     {items}
                 </ul>
             </section>
@@ -58,9 +58,9 @@ class ContactList extends React.Component {
 class ContactListItem extends React.Component {
     render() {
         var c = this.props.contact;
-        return (<li>
+        return (<li className="contact-item">
             <Link to={`/contacts/${c.id}`}>
-                {c.identity} - {c.name} <span>{c.email}</span>
+                {c.identity} - {c.name} <span className="email">{c.email}</span>
             </Link>
         </li>);
     }
@@ -81,13 +81,13 @@ class NewContactForm extends React.Component {
     render() {
         var c = this.state.contact;
         return (
-            <section>
+            <section className="contact-form">
                 <h2>New Contact</h2>
-                <p><label>Identity: </label> <input name="identity" value={c.identity} onChange={this._handleChange.bind(this)} /></p>
-                <p><label>Name: </label> <input name="name" value={c.name} onChange={this._handleChange.bind(this)} /></p>
-                <p><label>Email: </label> <input name="email" value={c.email} onChange={this._handleChange.bind(this)} /></p>
+                <p><label>Identity: </label> <input placeholder="Identity" name="identity" value={c.identity} onChange={this._handleChange.bind(this)} /></p>
+                <p><label>Name: </label> <input placeholder="Name" name="name" value={c.name} onChange={this._handleChange.bind(this)} /></p>
+                <p><label>Email: </label> <input placeholder="Email" name="email" value={c.email} onChange={this._handleChange.bind(this)} /></p>
                 <p>
-                    <button onClick={this._add.bind(this)}>Add Contact</button>
+                    <button className="btn-primary" onClick={this._add.bind(this)}>Add Contact</button>
                 </p>
             </section>
         );
@@ -129,14 +129,14 @@ class Contact extends React.Component {
     render() {
         var c = this.state.contact;
         return (
-            <section>
+            <section className="contact-form">
                 <h2>{c.identity} - {c.name}</h2>
-                <p><label>Identity: </label> <input name="identity" value={c.identity} onChange={this._handleChange.bind(this)} /></p>
-                <p><label>Name: </label> <input name="name" value={c.name} onChange={this._handleChange.bind(this)} /></p>
-                <p><label>Email: </label> <input name="email" value={c.email} onChange={this._handleChange.bind(this)} /></p>
+                <p><label>Identity: </label> <input placeholder="Identity" name="identity" value={c.identity} onChange={this._handleChange.bind(this)} /></p>
+                <p><label>Name: </label> <input placeholder="Name" name="name" value={c.name} onChange={this._handleChange.bind(this)} /></p>
+                <p><label>Email: </label> <input placeholder="Email" name="email" value={c.email} onChange={this._handleChange.bind(this)} /></p>
                 <p>
-                    <button onClick={this._update.bind(this)}>Update</button>
-                    <button onClick={this._delete.bind(this)}>Delete</button>
+                    <button className="btn-primary" onClick={this._update.bind(this)}>Update</button>
+                    <button className="btn-danger"  onClick={this._delete.bind(this)}>Delete</button>
                 </p>
             </section>
         );
