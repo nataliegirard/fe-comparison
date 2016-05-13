@@ -14,8 +14,8 @@ var dependencies = [
 
 var scriptsCount = 0;
 
-gulp.task('scripts', function() {
-    bundleApp(false);
+gulp.task('react', function() {
+    bundleReact(false);
 });
 
 gulp.task('styles', function() {
@@ -25,19 +25,19 @@ gulp.task('styles', function() {
 });
 
 gulp.task('deploy', function() {
-    bundleApp(true);
+    bundleReact(true);
 });
 
 gulp.task('watch', function() {
-    gulp.watch(['./app/*.js', './sass/*.scss'], ['scripts', 'styles']);
+    gulp.watch(['./react/*.js', './sass/*.scss'], ['react', 'styles']);
 });
 
-gulp.task('default', ['scripts', 'watch']);
+gulp.task('default', ['react', 'watch']);
 
-function bundleApp(isProduction) {
+function bundleReact(isProduction) {
     scriptsCount++;
     var appBundler = browserify({
-        entries: './app/app.js',
+        entries: './react/app.js',
         debug: true
     });
     
@@ -52,7 +52,7 @@ function bundleApp(isProduction) {
             .bundle()
             .on('error', gutil.log)
             .pipe(source('vendors.js'))
-            .pipe(gulp.dest('./public/'));
+            .pipe(gulp.dest('./public/react/'));
     }
     
     if (!isProduction) {
@@ -66,5 +66,5 @@ function bundleApp(isProduction) {
         .bundle()
         .on('error', gutil.log)
         .pipe(source('app.js'))
-        .pipe(gulp.dest('./public/'));
+        .pipe(gulp.dest('./public/react/'));
 }

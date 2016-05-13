@@ -58,6 +58,10 @@ app.route('/api/contacts/:id')
        delete data[req.params.id];
        res.json(null);
     });
+
+app.get('/react/*', function (req, res) {
+    res.sendfile(__dirname+'/public/react/index.html');
+});
     
 app.get('*', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');

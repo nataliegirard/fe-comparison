@@ -8,7 +8,7 @@ class App extends React.Component {
         return (
             <section>
                 <header>
-                    <h1><Link to="/contacts">React Contacts</Link></h1>
+                    <h1><Link to="/react/contacts">React Contacts</Link></h1>
                 </header>
                 {this.props.children}
             </section>
@@ -35,7 +35,7 @@ class ContactList extends React.Component {
         return(
             <section>
                 <div className="actions">
-                    <Link className="btn-primary" to="/contacts/new">New Contact</Link>
+                    <Link className="btn-primary" to="/react/contacts/new">New Contact</Link>
                 </div>
                 <ul className="contact-list">
                     {items}
@@ -58,8 +58,8 @@ class ContactList extends React.Component {
 class ContactListItem extends React.Component {
     render() {
         var c = this.props.contact;
-        return (<li className="contact-item">
-            <Link to={`/contacts/${c.id}`}>
+        return (<li>
+            <Link className="contact-item" to={`/react/contacts/${c.id}`}>
                 {c.identity} - {c.name} <span className="email">{c.email}</span>
             </Link>
         </li>);
@@ -71,9 +71,9 @@ class NewContactForm extends React.Component {
         super();
         this.state = {
             contact: {
-                identity: null,
-                name: null,
-                email: null
+                identity: '',
+                name: '',
+                email: ''
             }
         };
     }
@@ -108,7 +108,7 @@ class NewContactForm extends React.Component {
             contentType: 'application/json',
             success: (contact) => {
                 this.setState({ contact });
-                browserHistory.push('/contacts');
+                browserHistory.push('/react/contacts');
             }
         });
     }
@@ -118,7 +118,11 @@ class Contact extends React.Component {
     constructor() {
         super();
         this.state = {
-            contact: {}
+            contact: {
+                identity: '',
+                name: '',
+                email: ''
+            }
         };
     }
     
@@ -158,6 +162,7 @@ class Contact extends React.Component {
             contentType: 'application/json',
             success: (contact) => {
                 this.setState({ contact });
+                browserHistory.push('/react/contacts');
             }
         });
     }
@@ -168,7 +173,7 @@ class Contact extends React.Component {
             method: 'DELETE',
             url: '/api/contacts/'+contactId,
             success: () => {
-                browserHistory.push('/contacts');
+                browserHistory.push('/react/contacts');
             }
         });
     }
@@ -188,12 +193,12 @@ class Contact extends React.Component {
 jQuery(function() {
    ReactDOM.render((
         <Router history={browserHistory}>
-            <Route path="/" component={App}>
-                <IndexRedirect to="/contacts" />
-                <Route path="/contacts">
+            <Route path="/react/" component={App}>
+                <IndexRedirect to="/react/contacts" />
+                <Route path="/react/contacts">
                     <IndexRoute component={ContactList} />
-                    <Route path="/contacts/new" component={NewContactForm} />
-                    <Route path="/contacts/:contactId" component={Contact} />
+                    <Route path="/react/contacts/new" component={NewContactForm} />
+                    <Route path="/react/contacts/:contactId" component={Contact} />
                 </Route>
             </Route>
         </Router>
