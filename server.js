@@ -62,6 +62,10 @@ app.route('/api/contacts/:id')
 app.get('/react/*', function (req, res) {
     res.sendfile(__dirname+'/public/react/index.html');
 });
+
+app.get('/ember/*', function(req, res) {
+    res.sendfile(__dirname+'/public/ember/index.html');
+});
     
 app.get('*', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');

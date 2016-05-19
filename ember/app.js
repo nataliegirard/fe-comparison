@@ -28,7 +28,8 @@ app.ContactSerializer = DS.RESTSerializer.extend({
 });
 
 app.Router.reopen({
-   location: 'history' 
+   location: 'history',
+   rootURL: '/ember/'
 });
 
 app.Router.map(function () {
@@ -44,7 +45,7 @@ app.IndexRoute = Ember.Route.extend({
 });
 
 app.ContactsRoute = Ember.Route.extend({
-    model() {
+    model: function () {
         return this.store.findAll('contact');
     }
 });
@@ -54,6 +55,8 @@ app.ContactController = Ember.Controller.extend({
         update: function () {
             var model = this.get('model');
             model.save();
+            
+            this.transitionToRoute('contacts');
         },
         delete: function () {
             var model = this.get('model');
