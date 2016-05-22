@@ -1,8 +1,23 @@
 <div class="actions">
-    <a class="btn-primary" href="contacts/new">New Contact</a>
+    <a class="btn-primary" ng-href="contacts/new">New Contact</a>
 </div>
-<ul class="contact-list">
-    <li ng-repeat='c in contacts'>
-        <a class="contact-item" href='contacts/{{c.id}}'>{{c.identity}} - {{c.name}} <span class="email">{{c.email}}</span></a>
-    </li>
-</ul>
+<table class="contact-list">
+    <tr class="contact-heading">
+        <th class="identity" ng-click="sortType='identity'; sortReverse=!sortReverse">
+            Identity
+            <span class="caret-down" ng-show="sortType=='identity' && !sortReverse"></span>
+            <span class="caret-up" ng-show="sortType=='identity' && sortReverse"></span>
+        </th>
+        <th class="name" ng-click="sortType='name'; sortReverse=!sortReverse">
+            Name
+            <span class="caret-down" ng-show="sortType=='name' && !sortReverse"></span>
+            <span class="caret-up" ng-show="sortType=='name' && sortReverse"></span>
+        </th>
+        <th class="email">Email</th>
+    </tr>
+    <tr ng-repeat="c in contacts | orderBy:sortType:sortReverse" ng-click="showContact(c.id)" class="contact-item">
+        <td class="identity" ng-class="{bold: sortType=='identity'}">{{c.identity}}</td> 
+        <td class="name" ng-class="{bold: sortType=='name'}">{{c.name}}</td>
+        <td class="email">{{c.email}}</td>
+    </tr>
+</table>

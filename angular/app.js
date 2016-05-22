@@ -27,8 +27,15 @@ app.factory('Contacts', ['$resource', function ($resource) {
     });
 }]);
 
-app.controller('ListController', ['$scope', 'Contacts', function ($scope, Contacts) {
+app.controller('ListController', ['$scope', 'Contacts', '$location', function ($scope, Contacts, $location) {
    $scope.contacts = Contacts.query(); 
+   
+   $scope.sortType = 'identity';
+   $scope.sortReverse = false;
+   
+   $scope.showContact = function (id) {
+       $location.url('/contacts/'+id);
+   };
 }]);
 
 app.controller('SingleController', ['$scope', 'Contacts', '$routeParams', '$location', function ($scope, Contacts, $routeParams, $location) {

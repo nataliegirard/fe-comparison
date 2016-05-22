@@ -12,6 +12,7 @@ a:hover {
   text-decoration: none; }
 
 /* Mixins */
+/* General styles */
 .btn-primary,
 a.btn-primary {
   display: inline-block;
@@ -76,11 +77,37 @@ ul.dashed {
       content: "- ";
       text-indent: -5px; }
 
+.caret-down {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px dashed;
+  border-top: 4px solid\9;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent; }
+
+.caret-up {
+  display: inline-block;
+  width: 0;
+  height: 0;
+  margin-left: 2px;
+  vertical-align: middle;
+  border-top: 4px dashed;
+  border-top: 4px solid\9;
+  border-right: 4px solid transparent;
+  border-left: 4px solid transparent;
+  transform: rotate(180deg); }
+
 /* Header */
 h1 {
   font-size: 2.25rem;
   font-weight: 500;
   line-height: 1.1; }
+  h1 a:hover {
+    color: #000;
+    text-shadow: 1px 1px #ccc; }
 
 .description {
   font-size: 1.2rem; }
@@ -90,26 +117,70 @@ h1 {
 .small {
   font-size: 1rem; }
 
+.app-container {
+  width: 580px;
+  min-width: 580px; }
+
+.actions {
+  float: right;
+  margin-top: -55px; }
+
 /* Contact List */
-.contact-list {
+ul.contact-list {
   padding: 0; }
-  .contact-list li {
+  ul.contact-list li {
     list-style: none; }
+
+table.contact-list {
+  width: 100%; }
+  table.contact-list .identity {
+    min-width: 160px; }
+  table.contact-list .name {
+    min-width: 200px; }
+
+.contact-list {
+  width: 100%;
+  font-size: 1rem;
+  line-height: 1.28571429;
+  vertical-align: top; }
+  .contact-list .bold {
+    font-weight: 600; }
+
+.contact-heading {
+  display: block;
+  padding: 8px 0;
+  border-top: 1px solid transparent; }
+  .contact-heading .identity {
+    text-align: left;
+    font-size: 1.25rem;
+    font-weight: bold; }
+    .contact-heading .identity:hover {
+      cursor: pointer;
+      color: #000;
+      text-shadow: 1px 1px #ccc; }
+  .contact-heading .name {
+    text-align: left;
+    font-size: 1.125rem;
+    font-weight: 500; }
+    .contact-heading .name:hover {
+      cursor: pointer;
+      color: #000;
+      text-shadow: 1px 1px #ccc; }
+  .contact-heading .email {
+    text-align: left;
+    color: #333;
+    font-size: 1.125rem;
+    font-weight: 500; }
 
 .contact-item {
   display: block;
   padding: 8px 0;
-  border-top: 1px solid #ddd;
-  font-size: 1.125rem;
-  font-weight: bold;
-  line-height: 1.28571429;
-  vertical-align: top; }
+  border-top: 1px solid #ddd; }
   .contact-item:hover {
     background-color: #f5f5f5;
     cursor: pointer; }
 
 .email {
-  display: block;
   color: #777;
   font-size: 1rem;
   font-weight: normal; }
