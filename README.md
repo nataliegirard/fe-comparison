@@ -13,7 +13,7 @@ Comparing:
 The comparison will look at the page load speeds for each framework on a simple address book application.
 
 To run each framework separately:
-- enter the corresponding directory
-- run `npm install` and `bower install` (in most cases)
+- run `npm install` and `bower install`
 - start node/express server using `bin/www`
 - navigate the browser to localhost
+- load each different front-end framework by navigating to their URLs (eg. to see the angular app, go to `/angular`)

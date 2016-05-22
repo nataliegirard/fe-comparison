@@ -66,11 +66,26 @@ a.btn-danger {
     background-color: #c9302c;
     border-color: #ac2925; }
 
+ul.dashed {
+  margin: 0;
+  padding: 5px;
+  list-style: none; }
+  ul.dashed > li {
+    text-indent: -5px; }
+    ul.dashed > li:before {
+      content: "- ";
+      text-indent: -5px; }
+  ul.dashed a:hover {
+    text-decoration: underline; }
+
 /* Header */
 h1 {
   font-size: 2.25rem;
   font-weight: 500;
   line-height: 1.1; }
+
+.description {
+  font-size: 1.3em; }
 
 /* Contact List */
 .contact-list {

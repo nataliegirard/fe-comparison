@@ -73,11 +73,35 @@ a.btn-danger {
     }
 }
 
+ul.dashed {
+    margin: 0;
+    padding: 5px;
+    
+    list-style: none;
+    
+    & > li {
+        text-indent: -5px;
+        
+        &:before {
+            content: "- ";
+            text-indent: -5px;
+        }
+    }
+    
+    a:hover {
+        text-decoration: underline;
+    }
+}
+
 /* Header */
 h1 {
     font-size: 2.25rem;
     font-weight: 500;
     line-height: 1.1;
+}
+
+.description {
+    font-size: 1.3em;
 }
 
 /* Contact List */
