@@ -75,8 +75,6 @@ ul.dashed {
     ul.dashed > li:before {
       content: "- ";
       text-indent: -5px; }
-  ul.dashed a:hover {
-    text-decoration: underline; }
 
 /* Header */
 h1 {
@@ -85,7 +83,12 @@ h1 {
   line-height: 1.1; }
 
 .description {
-  font-size: 1.3em; }
+  font-size: 1.2rem; }
+  .description a:hover {
+    text-decoration: underline; }
+
+.small {
+  font-size: 1rem; }
 
 /* Contact List */
 .contact-list {
