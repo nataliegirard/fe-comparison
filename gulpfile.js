@@ -28,6 +28,10 @@ gulp.task('backbone', function() {
     bundleBackbone(false);
 });
 
+gulp.task('angular', function() {
+    bundleAngular(false);
+});
+
 gulp.task('styles', function() {
    gulp.src('sass/*.scss')
     .pipe(sass().on('error', sass.logError))
@@ -38,15 +42,16 @@ gulp.task('deploy', function() {
     bundleReact(true);
     bundleEmber(true);
     bundleBackbone(true);
+    bundleAngular(true);
 });
 
 gulp.task('watch', function() {
     gulp.watch(
-        ['./react/*.js', './ember/*.js', './backbone/*.js', './sass/*.scss'], 
-        ['react', 'ember', 'backbone', 'styles']);
+        ['./react/*.js', './ember/*.js', './backbone/*.js', './angular/*.js', './sass/*.scss'], 
+        ['react', 'ember', 'backbone', 'angular', 'styles']);
 });
 
-gulp.task('default', ['react', 'ember', 'backbone', 'watch']);
+gulp.task('default', ['react', 'ember', 'backbone', 'angular', 'watch']);
 
 var scriptsCount = 0;
 function bundleReact(isProduction) {
@@ -131,4 +136,22 @@ function bundleBackbone(isProduction) {
     return stream.done()
         .pipe(concat('app.js'))
         .pipe(gulp.dest('./public/backbone/'));
+}
+
+function bundleAngular(isProduction) {
+    var stream = streamqueue({ objectMode: true });
+    
+    stream.queue(
+        gulp.src([
+            'bower_components/angular/angular.js',
+            'bower_components/angular-resource/angular-resource.js',
+            'bower_components/angular-route/angular-route.js',
+            'angular/app.js'
+        ])
+        .pipe(uglify())
+    );
+    
+    return stream.done()
+        .pipe(concat('app.js'))
+        .pipe(gulp.dest('./public/angular/'));
 }

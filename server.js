@@ -58,21 +58,13 @@ app.route('/api/contacts/:id')
        delete data[req.params.id];
        res.json(null);
     });
-
-app.get('/react/*', function (req, res) {
-    res.sendfile(__dirname+'/public/react/index.html');
-});
-
-app.get('/ember/*', function(req, res) {
-    res.sendfile(__dirname+'/public/ember/index.html');
-});
-
-app.get('/backbone/*', function (req, res) {
-    res.sendfile(__dirname+'/public/backbone/index.html');
-});
     
-app.get('*', function (req, res) {
-    res.sendFile(__dirname + '/public/index.html');
+app.get(/^(.+)\/contacts/, function (req, res) {
+    res.sendFile( __dirname + '/public/' + req.params[0] + '/index.html');
 });
+
+app.get(/^(.+)$/, function (req, res) { 
+     res.sendFile( __dirname + '/public/' + req.params[0]); 
+ });
 
 module.exports = app;

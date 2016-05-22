@@ -1,0 +1,8 @@
+<div class="actions">
+    <a class="btn-primary" href="contacts/new">New Contact</a>
+</div>
+<ul class="contact-list">
+    <li ng-repeat='c in contacts'>
+        <a class="contact-item" href='contacts/{{c.id}}'>{{c.identity}} - {{c.name}} <span class="email">{{c.email}}</span></a>
+    </li>
+</ul>

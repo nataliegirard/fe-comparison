@@ -1,6 +1,6 @@
 var app = angular.module('ContactsApp', ['ngRoute', 'ngResource']);
 
-app.config(function ($routeProvider, $locationProvider) {
+app.config(['$routeProvider', '$locationProvider', function ($routeProvider, $locationProvider) {
     $routeProvider
         .when('/contacts', {
             controller: 'ListController',
@@ -19,19 +19,19 @@ app.config(function ($routeProvider, $locationProvider) {
         });
         
         $locationProvider.html5Mode(true);
-});
+}]);
 
-app.factory('Contacts', function ($resource) {
+app.factory('Contacts', ['$resource', function ($resource) {
     return $resource('/api/contacts/:id', { id: '@id' }, {
         'update': { method: 'PUT' }
     });
-});
+}]);
 
-app.controller('ListController', function ($scope, Contacts) {
+app.controller('ListController', ['$scope', 'Contacts', function ($scope, Contacts) {
    $scope.contacts = Contacts.query(); 
-});
+}]);
 
-app.controller('SingleController', function ($scope, Contacts, $routeParams, $location) {
+app.controller('SingleController', ['$scope', 'Contacts', '$routeParams', '$location', function ($scope, Contacts, $routeParams, $location) {
    var id = parseInt( $routeParams.id, 10 );
    $scope.contact = Contacts.get({ id: id });
    
@@ -39,19 +39,20 @@ app.controller('SingleController', function ($scope, Contacts, $routeParams, $lo
        $scope.contact.$update(function (updatedRecord) {
            $scope.contact = updatedRecord;
        });
+       $location.url('/contacts');
    };
    
    $scope.delete = function () {
        $scope.contact.$delete();
        $location.url('/contacts');
    };
-});
+}]);
 
-app.controller('NewController', function ($scope, Contacts, $location) {
+app.controller('NewController', ['$scope', 'Contacts', '$location', function ($scope, Contacts, $location) {
    $scope.contact = new Contacts();
    
    $scope.add = function () {
        $scope.contact.$save();
        $location.url('/contacts');
    };
-});
+}]);
