@@ -66,6 +66,10 @@ app.get('/react/*', function (req, res) {
 app.get('/ember/*', function(req, res) {
     res.sendfile(__dirname+'/public/ember/index.html');
 });
+
+app.get('/backbone/*', function (req, res) {
+    res.sendfile(__dirname+'/public/backbone/index.html');
+});
     
 app.get('*', function (req, res) {
     res.sendFile(__dirname + '/public/index.html');

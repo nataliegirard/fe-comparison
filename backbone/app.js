@@ -7,6 +7,7 @@ var Contacts = Backbone.Collection.extend({
 
 var ContactsListView = Backbone.View.extend({
     tagName: 'ul',
+    className: 'contact-list',
     render: function () {
         this.collection.forEach(function (model) {
             this.$el.append( (new ContactsItemView({ model: model })).render().el );
@@ -33,7 +34,7 @@ var ContactsItemView = Backbone.View.extend({
 
 var ActionsView = Backbone.View.extend({
    className: 'actions',
-   template: '<a href="/contacts/new">New Contact</a>',
+   template: '<a class="btn-primary" href="contacts/new">New Contact</a>',
    render: function () {
        this.el.innerHTML = this.template;
        return this;
@@ -62,6 +63,7 @@ var ContactView = Backbone.View.extend({
            name: this.$('.name').val(),
            email: this.$('.email').val()
         });
+        Backbone.history.navigate('', { trigger: true });
     },
     delete: function () {
         this.model.destroy();
@@ -126,5 +128,9 @@ contacts.fetch().then(function() {
     var r = new Router({
         contacts: contacts
     });
-    Backbone.history.start({ pushState: true });
+    Backbone.history.start({
+        pushState: true,
+        root: "/backbone/",
+        silent: false
+    });
 });

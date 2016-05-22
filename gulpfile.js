@@ -24,6 +24,10 @@ gulp.task('ember', function() {
     bundleEmber(false);
 });
 
+gulp.task('backbone', function() {
+    bundleBackbone(false);
+});
+
 gulp.task('styles', function() {
    gulp.src('sass/*.scss')
     .pipe(sass().on('error', sass.logError))
@@ -33,13 +37,16 @@ gulp.task('styles', function() {
 gulp.task('deploy', function() {
     bundleReact(true);
     bundleEmber(true);
+    bundleBackbone(true);
 });
 
 gulp.task('watch', function() {
-    gulp.watch(['./react/*.js', './ember/*.js', './sass/*.scss'], ['react', 'ember', 'styles']);
+    gulp.watch(
+        ['./react/*.js', './ember/*.js', './backbone/*.js', './sass/*.scss'], 
+        ['react', 'ember', 'backbone', 'styles']);
 });
 
-gulp.task('default', ['react', 'ember', 'watch']);
+gulp.task('default', ['react', 'ember', 'backbone', 'watch']);
 
 var scriptsCount = 0;
 function bundleReact(isProduction) {
@@ -101,4 +108,27 @@ function bundleEmber(isProduction) {
     return stream.done()
         .pipe(concat('app.js'))
         .pipe(gulp.dest('./public/ember/'));
+}
+
+function bundleBackbone(isProduction) {
+    var stream = streamqueue({ objectMode: true });
+    
+    stream.queue(
+        gulp.src([
+            'bower_components/jquery/dist/jquery.min.js'
+        ])
+    );
+    
+    stream.queue(
+        gulp.src([
+            'bower_components/underscore/underscore.js',
+            'bower_components/backbone/backbone.js',
+            'backbone/app.js'
+        ])
+        .pipe(uglify())
+    );
+    
+    return stream.done()
+        .pipe(concat('app.js'))
+        .pipe(gulp.dest('./public/backbone/'));
 }
