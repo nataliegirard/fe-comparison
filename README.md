@@ -1,8 +1,6 @@
 This repository is intended to be used to compare front-end frameworks. 
 
-Starting from the tutorial at [tutsplus](https://code.tutsplus.com/courses/comparing-front-end-frameworks),
-updating to newer version of the frameworks, and changing to a different style. More features will be added
-to do filtering, sorting, and searching of the contact list.
+This project was inspired by a tutorial at [tutsplus](https://code.tutsplus.com/courses/comparing-front-end-frameworks).
 
 Comparing:
 - Backbone.js
