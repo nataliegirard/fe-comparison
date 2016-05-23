@@ -1,35 +1,108 @@
 var Contact = Backbone.Model.extend({});
 
 var Contacts = Backbone.Collection.extend({
-  model: Contact,
-  url: '/api/contacts'
+    sort_key: 'identity',
+    sortOrder: false,
+    comparator: function (a, b) {
+        a = a.get(this.sort_key);
+        b = b.get(this.sort_key);
+ 
+        if (a == b) return 0;
+ 
+        if (this.sortOrder) {
+            return a > b ? -1 : 1;
+        } else {
+            return a > b ? 1 : -1;
+        }
+    },
+    sortByField: function (fieldName) {
+        this.sort_key = fieldName;
+    },
+    changeOrder: function (order) {
+        this.sortOrder = order;
+        this.sort();
+    },
+    model: Contact,
+    url: '/api/contacts'
 });
 
 var ContactsListView = Backbone.View.extend({
-    tagName: 'ul',
+    tagName: 'table',
     className: 'contact-list',
+    template: _.template( $('#ContactsListView').html() ),
+    focusedColumn: 'identity',
+    events: {
+        'click .contact-item': 'showContact',
+        'click .contact-item td': 'showContactFromCell',
+        'click .contact-heading .identity': 'changeIdentityOrder',
+        'click .contact-heading .name': 'changeNameOrder'
+    },
+    initialize: function () {
+        this.collection.on('sort', this.render, this);
+    },
     render: function () {
-        this.collection.forEach(function (model) {
-            this.$el.append( (new ContactsItemView({ model: model })).render().el );
-        }, this);
+        this.el.innerHTML = this.template({ contacts: this.collection.toJSON() });
         return this;
+    },
+    showContact: function (evt) {
+        this.goToContact($(evt.target).data('id'));
+    },
+    showContactFromCell: function (evt) {
+        evt.stopImmediatePropagation();
+        this.goToContact($(evt.target.parentNode).data('id'));
+    },
+    goToContact: function (id) {
+        Backbone.history.navigate('contacts/' + id, { trigger: true });
+    },
+    changeIdentityOrder: function (evt) {
+        if (this.focusedColumn == 'identity') {
+            this.collection.changeOrder(!this.collection.sortOrder);
+            $('.contact-heading .caret').addClass('hide');
+            if (this.collection.sortOrder) {
+                $('.contact-heading .identity .caret-up').removeClass('hide');
+            } else {
+                $('.contact-heading .identity .caret-down').removeClass('hide');
+            }
+        } else {
+            this.collection.sortByField('identity');
+            this.collection.changeOrder(false);
+            this.focusedColumn = 'identity';
+            $('.contact-heading .caret').addClass('hide');
+            $('.contact-heading .identity .caret-down').removeClass('hide');
+        }
+        
+        $('.name').removeClass('bold');
+        $('.identity').addClass('bold');
+    },
+    changeNameOrder: function (evt) {
+        if (this.focusedColumn == 'name') {
+            this.collection.changeOrder(!this.collection.sortOrder);
+            $('.contact-heading .caret').addClass('hide');
+            if (this.collection.sortOrder) {
+                $('.contact-heading .name .caret-up').removeClass('hide');
+            } else {
+                $('.contact-heading .name .caret-down').removeClass('hide');
+            }
+        } else {
+            this.collection.sortByField('name');
+            this.collection.changeOrder(false);
+            this.focusedColumn = 'name';
+            $('.contact-heading .caret').addClass('hide');
+            $('.contact-heading .name .caret-down').removeClass('hide');
+        }
+        
+        $('.identity').removeClass('bold');
+        $('.name').addClass('bold');
     }
 });
 
 var ContactsItemView = Backbone.View.extend({
     tagName: 'li',
-    events: {
-        'click a': 'handleClick'
-    },
     template: _.template( $('#ContactsItemViewTemplate').html() ),
     render: function() {
         this.el.innerHTML = this.template(this.model.toJSON());
         return this;
     },
-    handleClick: function (evt) {
-        evt.preventDefault();
-        Backbone.history.navigate('contacts/' + this.model.get('id'), { trigger: true });
-    }
 });
 
 var ActionsView = Backbone.View.extend({

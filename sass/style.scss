@@ -112,6 +112,10 @@ ul.dashed {
     transform: rotate(180deg);
 }
 
+.hide {
+    display: none;
+}
+
 /* Header */
 h1 {
     font-size: 2.25rem;
@@ -189,8 +193,13 @@ table.contact-list {
     .identity {
         text-align: left;
         
-        font-size: 1.25rem;
-        font-weight: bold;
+        font-size: 1.125rem;
+        font-weight: 500;
+        
+        &.bold {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
         
         &:hover {
             cursor: pointer;
@@ -204,6 +213,11 @@ table.contact-list {
         
         font-size: 1.125rem;
         font-weight: 500;
+        
+        &.bold {
+            font-size: 1.25rem;
+            font-weight: bold;
+        }
         
         &:hover {
             cursor: pointer;

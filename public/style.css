@@ -100,6 +100,9 @@ ul.dashed {
   border-left: 4px solid transparent;
   transform: rotate(180deg); }
 
+.hide {
+  display: none; }
+
 /* Header */
 h1 {
   font-size: 2.25rem;
@@ -152,8 +155,11 @@ table.contact-list {
   border-top: 1px solid transparent; }
   .contact-heading .identity {
     text-align: left;
-    font-size: 1.25rem;
-    font-weight: bold; }
+    font-size: 1.125rem;
+    font-weight: 500; }
+    .contact-heading .identity.bold {
+      font-size: 1.25rem;
+      font-weight: bold; }
     .contact-heading .identity:hover {
       cursor: pointer;
       color: #000;
@@ -162,6 +168,9 @@ table.contact-list {
     text-align: left;
     font-size: 1.125rem;
     font-weight: 500; }
+    .contact-heading .name.bold {
+      font-size: 1.25rem;
+      font-weight: bold; }
     .contact-heading .name:hover {
       cursor: pointer;
       color: #000;

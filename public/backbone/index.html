@@ -14,6 +14,27 @@
             </div>
         </div>
         
+        <script type="text/template" id="ContactsListView">
+<tr class="contact-heading">
+    <th class="identity bold">Identity
+        <span class="caret caret-down"></span>
+        <span class="caret caret-up hide"></span>
+    </th>
+    <th class="name">Name
+        <span class="caret caret-down hide"></span>
+        <span class="caret caret-up hide"></span>
+    </th>
+    <th class="email">Email</th>
+</tr>
+<% _.each(contacts, function(c) { %>
+    <tr class="contact-item" data-id="<%= c.id %>">
+        <td class="identity bold"><%= c.identity %></td>
+        <td class="name"><%= c.name %></td>
+        <td class="email"><%= c.email %></td>
+    </tr>
+<% }); %>            
+        </script>
+        
         <script type="text/template" id="ContactsItemViewTemplate">
 <a class="contact-item" href='contacts/<%= id %>'><%= identity %> - <%= name %> <span class="email"><%= email %></span></a>
         </script>
