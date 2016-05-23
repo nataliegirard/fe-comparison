@@ -8,7 +8,7 @@ class App extends React.Component {
         return (
             <section>
                 <header>
-                    <h1><Link to="/react/contacts">React Contacts</Link></h1>
+                    <h1><a href="/react/contacts">React Contacts</a></h1>
                 </header>
                 {this.props.children}
             </section>
@@ -20,7 +20,9 @@ class ContactList extends React.Component {
     constructor() {
         super();
         this.state = {
-            contacts: []
+            contacts: [],
+            orderBy: 'identity',
+            orderDesc: false
         };
     }
     
@@ -29,17 +31,68 @@ class ContactList extends React.Component {
     }
     
     render() {
-        var items = this.state.contacts.map((contact) => {
-            return (<ContactListItem key={contact.id} contact={contact} />);
+        var _this = this;
+        var contacts = this.state.contacts.sort(function(a,b) {
+            var keyA = a[_this.state.orderBy];
+            var keyB = b[_this.state.orderBy];
+            if (keyA == keyB) return 0;
+            
+            if (_this.state.orderDesc) {
+                return (keyA > keyB ? -1 : 1);
+            }
+            return (keyA > keyB ? 1 : -1);
         });
+        
+        var items = contacts.map((contact) => {
+            return (<ContactListItem key={contact.id} contact={contact} orderBy={this.state.orderBy} />);
+        });
+        
+        var identityClasses='identity',
+            nameClasses='name',
+            identityCaretDown='caret-down hide',
+            identityCaretUp='caret-up hide',
+            nameCaretDown='caret-down hide',
+            nameCaretUp='caret-up hide';
+            
+        if (this.state.orderBy == 'identity') {
+            identityClasses += ' bold';
+            if (this.state.orderDesc) {
+                identityCaretUp = 'caret-up';
+            } else {
+                identityCaretDown = 'caret-down';
+            }
+        }
+        
+        if (this.state.orderBy == 'name') {
+            nameClasses += ' bold';
+            if (this.state.orderDesc) {
+                nameCaretUp = 'caret-up';
+            } else {
+                nameCaretDown = 'caret-down';
+            }
+        }
+        
         return(
             <section>
                 <div className="actions">
                     <Link className="btn-primary" to="/react/contacts/new">New Contact</Link>
                 </div>
-                <ul className="contact-list">
-                    {items}
-                </ul>
+                <table className="contact-list">
+                    <tbody>
+                        <tr className="contact-heading">
+                            <th className={identityClasses} onClick={this._orderByIdentity.bind(this)}>Identity
+                                <span className={identityCaretDown}></span>
+                                <span className={identityCaretUp}></span>
+                            </th>
+                            <th className={nameClasses} onClick={this._orderByName.bind(this)}>Name
+                                <span className={nameCaretDown}></span>
+                                <span className={nameCaretUp}></span>
+                            </th>
+                            <th className="email">Email</th>
+                        </tr>
+                        {items}
+                    </tbody>
+                </table>
             </section>
         );
     }
@@ -53,16 +106,63 @@ class ContactList extends React.Component {
             }
         });
     }
+    
+    _orderByIdentity() {
+        if (this.state.orderBy == 'identity') {
+            this.setState({orderDesc: !this.state.orderDesc});
+        } else {
+            this.setState({
+                orderBy: 'identity',
+                orderDesc: false
+            });
+        }
+    }
+    
+    _orderByName() {
+        if (this.state.orderBy == 'name') {
+            this.setState({orderDesc: !this.state.orderDesc});
+        } else {
+            this.setState({
+                orderBy: 'name',
+                orderDesc: false
+            });
+        }
+    }
 }
 
 class ContactListItem extends React.Component {
     render() {
         var c = this.props.contact;
-        return (<li>
-            <Link className="contact-item" to={`/react/contacts/${c.id}`}>
-                {c.identity} - {c.name} <span className="email">{c.email}</span>
-            </Link>
-        </li>);
+        var identityClasses = "identity",
+            nameClasses = "name";
+            
+        if (this.props.orderBy == 'identity') {
+            identityClasses += ' bold';
+        }
+        
+        if (this.props.orderBy == 'name') {
+            nameClasses += ' bold';
+        }
+        
+        return (
+            <tr className="contact-item" data-id={c.id} onClick={this._showContact.bind(this)}>
+                <td className={identityClasses}>{c.identity}</td>
+                <td className={nameClasses}>{c.name}</td>
+                <td className="email">{c.email}</td>
+            </tr>
+        );
+    }
+    
+    _showContact(evt) {
+        var el = null;
+        if (evt.target.tagName == 'TD') {
+            el = evt.target.parentNode;
+        } else {
+            el = evt.target;
+        }
+        
+        var id = el.getAttribute('data-id');
+        browserHistory.push('/react/contacts/'+id);
     }
 }
 
