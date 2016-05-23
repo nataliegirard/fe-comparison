@@ -50,6 +50,61 @@ app.ContactsRoute = Ember.Route.extend({
     }
 });
 
+app.ContactsController = Ember.Controller.extend({
+    sortProps: ['identity'],
+    sortBy: 'identity',
+    sortDesc: false,
+    actions: {
+        sortIdentity: function () {
+            if (this.sortBy == 'identity') {
+                if (this.sortDesc) {
+                    this.set('sortProps', ['identity']);
+                    this.set('sortDesc', false);
+                    $('.contact-heading .identity .caret-down').removeClass('hide');
+                    $('.contact-heading .identity .caret-up').addClass('hide');
+                } else {
+                    this.set('sortProps', ['identity:desc']);
+                    this.set('sortDesc', true);
+                    $('.contact-heading .identity .caret-up').removeClass('hide');
+                    $('.contact-heading .identity .caret-down').addClass('hide');
+                }
+            } else {
+                this.set('sortProps', ['identity']);
+                this.set('sortBy', 'identity');
+                this.set('sortDesc', false);
+                $('.identity').addClass('bold');
+                $('.name').removeClass('bold');
+                $('.contact-heading .caret').addClass('hide');
+                $('.contact-heading .identity .caret-down').removeClass('hide');
+            }
+        },
+        sortName: function () {
+            if (this.sortBy == 'name') {
+                if (this.sortDesc) {
+                    this.set('sortProps', ['name']);
+                    this.set('sortDesc', false);
+                    $('.contact-heading .name .caret-down').removeClass('hide');
+                    $('.contact-heading .name .caret-up').addClass('hide');
+                } else {
+                    this.set('sortProps', ['name:desc']);
+                    this.set('sortDesc', true);
+                    $('.contact-heading .name .caret-up').removeClass('hide');
+                    $('.contact-heading .name .caret-down').addClass('hide');
+                }
+            } else {
+                this.set('sortProps', ['name']);
+                this.set('sortBy', 'name');
+                this.set('sortDesc', false);
+                $('.name').addClass('bold');
+                $('.identity').removeClass('bold');
+                $('.contact-heading .caret').addClass('hide');
+                $('.contact-heading .name .caret-down').removeClass('hide');
+            }
+        }
+    },
+    sortedContacts: Ember.computed.sort('model', 'sortProps')
+});
+
 app.ContactController = Ember.Controller.extend({
     actions: {
         update: function () {

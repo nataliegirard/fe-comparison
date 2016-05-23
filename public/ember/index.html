@@ -7,7 +7,7 @@
         <script type="text/x-handlebars" id="application">
             <div id="main">
                 <header>
-                    <h1>{{#link-to 'contacts'}}Ember Contacts{{/link-to}}</h1>
+                    <h1><a href="/ember/">Ember Contacts</a></h1>
                 </header>
                 <div id="app">
                     {{outlet}}
@@ -19,15 +19,27 @@
             <div class='actions'>
                 {{#link-to 'new' class="btn-primary"}}New Contact{{/link-to}}
             </div>
-            <ul class="contact-list">
-                {{#each model as |contact| }}
-                    <li>
-                        {{#link-to 'contact' contact class="contact-item"}}
-                            {{contact.identity}} - {{contact.name}} <span class="email">{{contact.email}}</span>
-                        {{/link-to}}
-                    </li>
+            <table class="contact-list">
+                <tr class="contact-heading">
+                    <th class="identity bold" {{action "sortIdentity"}}>Identity
+                        <span class="caret caret-down"></span>
+                        <span class="caret caret-up hide"></span>
+                    </th>
+                    <th class="name" {{action "sortName"}}>Name
+                        <span class="caret caret-down hide"></span>
+                        <span class="caret caret-up hide"></span>
+                    </th>
+                    <th class="email">Email</th>
+                </tr>
+            
+                {{#each sortedContacts as |contact| }}
+                    {{#link-to 'contact' contact tagName="tr" class="contact-item"}}
+                        <td class="identity bold">{{contact.identity}}</td>
+                        <td class="name">{{contact.name}}</td>
+                        <td class="email">{{contact.email}}</td>
+                    {{/link-to}}
                 {{/each}}
-            </ul>
+            </table>
         </script>
         
         <script type="text/x-handlebars" id="contact">
