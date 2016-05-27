@@ -1,6 +1,6 @@
 /* Resets */
 body {
-    padding: 50px;
+    padding: 30px;
     
     color: #333;
     
@@ -20,6 +20,7 @@ a:hover {
 @mixin btn() {
     display: inline-block;
   
+    height: 34px;
     padding: 6px 12px;
     margin-right: 5px;
     margin-bottom: 0;
@@ -34,9 +35,36 @@ a:hover {
     
     cursor: pointer;
     white-space: nowrap;
+    box-sizing: border-box;
     
     &:active {
         box-shadow: inset 0 3px 5px rgba(0,0,0,.125);
+    }
+}
+
+@mixin input() {
+    display: block;
+        
+    width: 100%;
+    height: 2.125rem;
+    padding: 6px 12px;
+    
+    color: #555;
+    background-color: #fff;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
+    
+    font-size: 1rem;
+    line-height: 1.42857143;
+    
+    vertical-align: middle;
+    transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
+    
+    &:focus {
+        border-color: #66afe9;
+        outline: 0;
+        box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
     }
 }
 
@@ -145,9 +173,67 @@ h1 {
     min-width: 580px;
 }
 
-.actions {
-    float: right;
-    margin-top: -55px;
+.search-box {
+    display: inline-block;
+    
+    margin: 0 0 10px 10px;
+}
+
+
+.search-input {
+    @include input();
+    
+    display: table-cell;
+    position: relative;
+    float: left;
+    
+    width: 80%;
+    min-width: 160px;
+    margin-bottom: 0;
+    
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    
+    z-index: 2;
+}
+
+.search-btn {
+    @include btn();
+    
+    display: table-cell;
+    position: relative;
+    
+    width: 50px;
+    height: 34px;
+    vertical-align: middle;
+    margin-left: -1px;
+    padding: 0;
+    
+    background-color: #e6e6e6;
+    border: 1px solid #adadad;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+    
+    font-size: 0;
+    
+    white-space: nowrap;
+    z-index: 2;
+    
+    &:hover {
+        background-color: #ddd;
+    }
+}
+
+.search-icon {
+    display: inline-block;
+    
+    margin: 0;
+    padding: 0;
+    height: 25px;
+    width: 25px;
+    
+    background: url('/img/search.svg') no-repeat;
+    background-size: 25px 25px;
 }
 
 /* Contact List */
@@ -264,7 +350,7 @@ h2 {
 }
 
 .contact-form {
-    width: 35%;
+    width: 40%;
     
     label {
         display: inline-block;
@@ -276,28 +362,6 @@ h2 {
     }
     
     input {
-        display: block;
-        
-        width: 100%;
-        height: 2.125rem;
-        padding: 6px 12px;
-        
-        color: #555;
-        background-color: #fff;
-        border: 1px solid #ccc;
-        border-radius: 4px;
-        box-shadow: inset 0 1px 1px rgba(0,0,0,.075);
-        
-        font-size: 1rem;
-        line-height: 1.42857143;
-        
-        vertical-align: middle;
-        transition: border-color ease-in-out .15s, box-shadow ease-in-out .15s;
-        
-        &:focus {
-            border-color: #66afe9;
-            outline: 0;
-            box-shadow: inset 0 1px 1px rgba(0,0,0,.075), 0 0 8px rgba(102,175,233,.6);
-        }
+        @include input();
     }
 }
