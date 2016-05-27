@@ -22,27 +22,42 @@ var Contacts = Backbone.Collection.extend({
         this.sortOrder = order;
         this.sort();
     },
+    search: function (text) {
+        if (text == "") return this;
+        
+        _.each(this.filter(function (model) {
+            return _.some(model.values(), function (value) {
+                if (typeof value !== "string") return false;
+                return value.toLowerCase().indexOf(text) > -1;
+            });
+        }), function () { return this });
+    },
     model: Contact,
     url: '/api/contacts'
 });
 
 var ContactsListView = Backbone.View.extend({
-    tagName: 'table',
-    className: 'contact-list',
     template: _.template( $('#ContactsListView').html() ),
     focusedColumn: 'identity',
     events: {
         'click .contact-item': 'showContact',
         'click .contact-item td': 'showContactFromCell',
         'click .contact-heading .identity': 'changeIdentityOrder',
-        'click .contact-heading .name': 'changeNameOrder'
+        'click .contact-heading .name': 'changeNameOrder',
+        'keyup .search-input': 'searchContact'
     },
     initialize: function () {
         this.collection.on('sort', this.render, this);
     },
     render: function () {
         this.el.innerHTML = this.template({ contacts: this.collection.toJSON() });
+        this.collection.each(this.addContact, this);
         return this;
+    },
+    addContact: function (model) {
+        model.focus = this.collection.sort_key;
+        var view = new ContactsItemView({ model: model });
+        this.$('tbody').append(view.render().el);
     },
     showContact: function (evt) {
         this.goToContact($(evt.target).data('id'));
@@ -93,25 +108,36 @@ var ContactsListView = Backbone.View.extend({
         
         $('.identity').removeClass('bold');
         $('.name').addClass('bold');
+    },
+    searchContact: function () {
+        var search = this.$('.search-input').val().toLowerCase();
+        
+        this.$('.contact-item').remove();
+        _.each(this.collection.filter(function (model) {
+            return _.some(model.values(), function (value) {
+                if (typeof value !== "string") return false;
+                return value.toLowerCase().indexOf(search) > -1;
+            });
+        }), $.proxy(this.addContact, this));
     }
 });
 
 var ContactsItemView = Backbone.View.extend({
-    tagName: 'li',
+    tagName: 'tr',
+    className: 'contact-item',
     template: _.template( $('#ContactsItemViewTemplate').html() ),
+    attributes: function() {
+        return {
+            'data-id': this.model.id
+        };
+    },
     render: function() {
-        this.el.innerHTML = this.template(this.model.toJSON());
+        var data = this.model.toJSON();
+        data.focus = this.model.focus;
+        
+        this.el.innerHTML = this.template(data);
         return this;
     },
-});
-
-var ActionsView = Backbone.View.extend({
-   className: 'actions',
-   template: '<a class="btn-primary" href="contacts/new">New Contact</a>',
-   render: function () {
-       this.el.innerHTML = this.template;
-       return this;
-   }
 });
 
 var ContactView = Backbone.View.extend({
@@ -182,7 +208,6 @@ var Router = Backbone.Router.extend({
     },
     displayList: function () {
         this.el.empty()
-            .append(new ActionsView().render().el)
             .append(new ContactsListView({ collection: this.contacts}).render().el);
     },
     displayForm: function () {

@@ -5,7 +5,7 @@
         <base href="/backbone/" />
     </head>
     <body>
-        <div id="main">
+        <div id="main" class="app-container">
             <header>
                 <h1><a href='contacts'>Backbone Contacts</a></h1>
             </header>
@@ -15,28 +15,34 @@
         </div>
         
         <script type="text/template" id="ContactsListView">
-<tr class="contact-heading">
-    <th class="identity bold">Identity
-        <span class="caret caret-down"></span>
-        <span class="caret caret-up hide"></span>
-    </th>
-    <th class="name">Name
-        <span class="caret caret-down hide"></span>
-        <span class="caret caret-up hide"></span>
-    </th>
-    <th class="email">Email</th>
-</tr>
-<% _.each(contacts, function(c) { %>
-    <tr class="contact-item" data-id="<%= c.id %>">
-        <td class="identity bold"><%= c.identity %></td>
-        <td class="name"><%= c.name %></td>
-        <td class="email"><%= c.email %></td>
-    </tr>
-<% }); %>            
+<div class="actions">
+    <a class="btn-primary" href="contacts/new">New Contact</a>
+    <div class="search-box">
+        <input type="text" class="search-input" placeholder="Search" />
+        <button class="search-btn" type="button"><span class="search-icon"></span></button>
+    </div>
+</div>
+<table class="contact-list">
+    <tbody>
+        <tr class="contact-heading">
+            <th class="identity bold">Identity
+                <span class="caret caret-down"></span>
+                <span class="caret caret-up hide"></span>
+            </th>
+            <th class="name">Name
+                <span class="caret caret-down hide"></span>
+                <span class="caret caret-up hide"></span>
+            </th>
+            <th class="email">Email</th>
+        </tr>
+    </tbody>
+</table>
         </script>
         
         <script type="text/template" id="ContactsItemViewTemplate">
-<a class="contact-item" href='contacts/<%= id %>'><%= identity %> - <%= name %> <span class="email"><%= email %></span></a>
+<td class="identity <% if (focus == 'identity') { %>bold<%}%>"><%= identity %></td>
+<td class="name <% if (focus == 'name') {%>bold<%}%>"><%= name %></td>
+<td class="email"><%= email %></td>
         </script>
         
         <script type="text/template" id="ContactViewTemplate">
