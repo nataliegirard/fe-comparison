@@ -54,6 +54,7 @@ app.ContactsController = Ember.Controller.extend({
     sortProps: ['identity'],
     sortBy: 'identity',
     sortDesc: false,
+    searchText: '',
     actions: {
         sortIdentity: function () {
             if (this.sortBy == 'identity') {
@@ -102,7 +103,15 @@ app.ContactsController = Ember.Controller.extend({
             }
         }
     },
-    sortedContacts: Ember.computed.sort('model', 'sortProps')
+    sortedContacts: Ember.computed.sort('model', 'sortProps'),
+    searchContacts: function() {
+        var filter = this.get('searchText');
+        var contacts = this.get('sortedContacts');
+        var rx = new RegExp(filter, 'gi');
+        return contacts.filter(function (contact) {
+            return contact.get('identity').match(rx) || contact.get('name').match(rx);
+        });
+    }.property('searchText', 'sortedContacts')
 });
 
 app.ContactController = Ember.Controller.extend({
