@@ -20,9 +20,10 @@ class ContactList extends React.Component {
     constructor() {
         super();
         this.state = {
-            contacts: [],
+            contacts: [], //This shouldn't be in state
             orderBy: 'identity',
-            orderDesc: false
+            orderDesc: false,
+            searchText: ''
         };
     }
     
@@ -32,6 +33,8 @@ class ContactList extends React.Component {
     
     render() {
         var _this = this;
+        var items = [];
+        
         var contacts = this.state.contacts.sort(function(a,b) {
             var keyA = a[_this.state.orderBy];
             var keyB = b[_this.state.orderBy];
@@ -43,8 +46,11 @@ class ContactList extends React.Component {
             return (keyA > keyB ? 1 : -1);
         });
         
-        var items = contacts.map((contact) => {
-            return (<ContactListItem key={contact.id} contact={contact} orderBy={this.state.orderBy} />);
+        contacts.forEach((contact) => {
+            if (contact.identity.toLowerCase().indexOf(this.state.searchText) === -1 && contact.name.toLowerCase().indexOf(this.state.searchText) === -1) {
+                return;
+            }
+            items.push(<ContactListItem key={contact.id} contact={contact} orderBy={this.state.orderBy} />);
         });
         
         var identityClasses='identity',
@@ -72,10 +78,15 @@ class ContactList extends React.Component {
             }
         }
         
+        //refactor so that the actions and contact list are in different components
         return(
             <section>
                 <div className="actions">
                     <Link className="btn-primary" to="/react/contacts/new">New Contact</Link>
+                    <div className="search-box">
+                        <input type="text" value={this.state.searchText} ref="searchTextInput" onChange={this._handleSearch.bind(this)} className="search-input" placeholder="Search" />
+                        <button className="search-btn" type="button"><span className="search-icon"></span></button>
+                    </div>
                 </div>
                 <table className="contact-list">
                     <tbody>
@@ -127,6 +138,12 @@ class ContactList extends React.Component {
                 orderDesc: false
             });
         }
+    }
+    
+    _handleSearch() {
+        this.setState({
+            searchText: this.refs.searchTextInput.value
+        });
     }
 }
 
