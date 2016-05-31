@@ -22,16 +22,6 @@ var Contacts = Backbone.Collection.extend({
         this.sortOrder = order;
         this.sort();
     },
-    search: function (text) {
-        if (text == "") return this;
-        
-        _.each(this.filter(function (model) {
-            return _.some(model.values(), function (value) {
-                if (typeof value !== "string") return false;
-                return value.toLowerCase().indexOf(text) > -1;
-            });
-        }), function () { return this });
-    },
     model: Contact,
     url: '/api/contacts'
 });
@@ -47,7 +37,7 @@ var ContactsListView = Backbone.View.extend({
         'keyup .search-input': 'searchContact'
     },
     initialize: function () {
-        this.collection.on('sort', this.render, this);
+        this.collection.on('sort', this.searchContact, this);
     },
     render: function () {
         this.el.innerHTML = this.template({ contacts: this.collection.toJSON() });
@@ -71,6 +61,7 @@ var ContactsListView = Backbone.View.extend({
     },
     changeIdentityOrder: function (evt) {
         if (this.focusedColumn == 'identity') {
+            this.focussedColumn = 'identity';
             this.collection.changeOrder(!this.collection.sortOrder);
             $('.contact-heading .caret').addClass('hide');
             if (this.collection.sortOrder) {
@@ -91,6 +82,7 @@ var ContactsListView = Backbone.View.extend({
     },
     changeNameOrder: function (evt) {
         if (this.focusedColumn == 'name') {
+            this.focusedColumn = 'name';
             this.collection.changeOrder(!this.collection.sortOrder);
             $('.contact-heading .caret').addClass('hide');
             if (this.collection.sortOrder) {
