@@ -1,0 +1,10 @@
+<section class="contact-form">
+    <h2>{{model.identity}} - {{model.name}}</h2>
+    <p><label>Identity: </label> {{input placeholder="Identity" value=model.identity }}</p>
+    <p><label>Name: </label> {{input placeholder="Name" value=model.name }}</p>
+    <p><label>Email: </label> {{input placeholder="Email" value=model.email }}</p>
+    <p>
+        <button {{action "update"}} class="btn-primary">Update</button>
+        <button {{action "delete"}} class="btn-danger">Delete</button>
+    </p>
+</section>

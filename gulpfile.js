@@ -7,7 +7,7 @@ var gulp = require('gulp'),
     babelify = require('babelify'),
     buffer = require('vinyl-buffer'),
     uglify = require('gulp-uglify'),
-    handlebars = require('gulp-ember-handlebars'),
+    htmlbars = require('gulp-htmlbars-compiler'),
     sass = require('gulp-sass');
 
 gulp.task('react', function() {
@@ -15,7 +15,16 @@ gulp.task('react', function() {
 });
 
 gulp.task('ember', function() {
+    var compiler = require('./bower_components/ember/ember-template-compiler');
     bundleEmber(false);
+    
+    return gulp.src('./ember/templates/*.hbs')
+		.pipe(htmlbars({
+			compiler: compiler
+		}))
+		.pipe(uglify())
+        .pipe(concat('templates.js'))
+        .pipe(gulp.dest('./public/ember/'));
 });
 
 gulp.task('backbone', function() {
@@ -100,7 +109,6 @@ function bundleEmber(isProduction) {
     
     stream.queue(
         gulp.src([
-            'bower_components/ember/ember-template-compiler.js',
             'ember/app.js'
         ])
         .pipe(uglify())
