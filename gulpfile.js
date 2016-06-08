@@ -5,16 +5,10 @@ var gulp = require('gulp'),
     concat = require('gulp-concat'),
     streamqueue = require('streamqueue'),
     babelify = require('babelify'),
+    buffer = require('vinyl-buffer'),
     uglify = require('gulp-uglify'),
     handlebars = require('gulp-ember-handlebars'),
     sass = require('gulp-sass');
-    
-var ReactDependencies = [
-    'react',
-    'react-dom',
-    'react-router',
-    'jquery'
-];
 
 gulp.task('react', function() {
     bundleReact(false);
@@ -53,48 +47,50 @@ gulp.task('watch', function() {
 
 gulp.task('default', ['react', 'ember', 'backbone', 'angular', 'watch']);
 
-var scriptsCount = 0;
+
 function bundleReact(isProduction) {
-    scriptsCount++;
-    var appBundler = browserify({
-        entries: './react/app.js',
-        debug: true
-    });
+    var stream = streamqueue({ objectMode: true });
     
-    // If not production, separate dependencies so as to not bundle them
-    // each time a file changes
-    if (!isProduction && scriptsCount === 1) {
-        // create vendor.js for dev environment
+    stream.queue(
+        gulp.src([  
+            'bower_components/jquery/dist/jquery.min.js',
+            'bower_components/react/react.min.js',
+            'bower_components/react/react-dom.min.js',
+        ])
+    );
+    
+    stream.queue(
         browserify({
-            require: ReactDependencies,
-            debug: true
-        })
+                require: 'react-router'
+            })
+            .transform('babelify', {presets: ["es2015", "react"]})
             .bundle()
-            .on('error', gutil.log)
             .pipe(source('vendors.js'))
-            .pipe(gulp.dest('./public/react/'));
-    }
+            .pipe(buffer())
+            .pipe(uglify())
+            .on('error', gutil.log)
+    );
     
-    if (!isProduction) {
-        ReactDependencies.forEach(function(dep) {
-            appBundler.external(dep);
-        });
-    }
+    stream.queue(
+        browserify('./react/app.js', { debug: true })
+            .transform('babelify', {presets: ["es2015", "react"]})
+            .bundle()
+            .pipe(source('bundle.js'))
+            .pipe(buffer())
+            .pipe(uglify())
+            .on('error', gutil.log)
+    );
     
-    appBundler 
-        .transform('babelify', {presets: ["es2015", "react"]})
-        .bundle()
-        .on('error', gutil.log)
-        .pipe(source('app.js'))
+    return stream.done()
+        .pipe(concat('app.js'))
         .pipe(gulp.dest('./public/react/'));
 }
-
 
 function bundleEmber(isProduction) {
     var stream = streamqueue({ objectMode: true });
     
     stream.queue(
-        gulp.src([
+        gulp.src([  
             'bower_components/jquery/dist/jquery.min.js',
             'bower_components/handlebars/handlebars.min.js',
             'bower_components/ember/ember.min.js',
