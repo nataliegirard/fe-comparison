@@ -7,12 +7,12 @@
 </div>
 <table class="contact-list">
     <tr class="contact-heading">
-        <th class="identity" ng-click="sortType='identity'; sortReverse=!sortReverse" ng-class="{bold: sortType=='identity'}">
+        <th class="identity" ng-click="changeOrder('identity')" ng-class="{bold: sortType=='identity'}">
             Identity
             <span class="caret-down" ng-show="sortType=='identity' && !sortReverse"></span>
             <span class="caret-up" ng-show="sortType=='identity' && sortReverse"></span>
         </th>
-        <th class="name" ng-click="sortType='name'; sortReverse=!sortReverse" ng-class="{bold: sortType=='name'}">
+        <th class="name" ng-click="changeOrder('name')" ng-class="{bold: sortType=='name'}">
             Name
             <span class="caret-down" ng-show="sortType=='name' && !sortReverse"></span>
             <span class="caret-up" ng-show="sortType=='name' && sortReverse"></span>

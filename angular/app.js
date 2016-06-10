@@ -33,6 +33,15 @@ app.controller('ListController', ['$scope', 'Contacts', '$location', function ($
    $scope.sortType = 'identity';
    $scope.sortReverse = false;
    
+   $scope.changeOrder = function (type) {
+       if (type === $scope.sortType) {
+           $scope.sortReverse = !$scope.sortReverse;
+       } else {
+           $scope.sortType = type;
+           $scope.sortReverse = false;
+       }
+   }
+   
    $scope.showContact = function (id) {
        $location.url('/contacts/'+id);
    };
