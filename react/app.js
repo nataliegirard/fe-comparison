@@ -238,7 +238,8 @@ class Contact extends React.Component {
             contact: {
                 identity: '',
                 name: '',
-                email: ''
+                email: '',
+                imgUrl: 'no-avatar.png'
             }
         };
     }
@@ -251,6 +252,7 @@ class Contact extends React.Component {
         var c = this.state.contact;
         return (
             <section className="contact-form">
+                <img className="contact-img" src={'/img/'+c.imgUrl} />
                 <h2>{c.identity} - {c.name}</h2>
                 <p><label>Identity: </label> <input placeholder="Identity" name="identity" value={c.identity} onChange={this._handleChange.bind(this)} /></p>
                 <p><label>Name: </label> <input placeholder="Name" name="name" value={c.name} onChange={this._handleChange.bind(this)} /></p>

@@ -7,7 +7,8 @@ app.ApplicationAdapter = DS.RESTAdapter.extend({
 app.Contact = DS.Model.extend({
    identity: DS.attr('string'),
    name: DS.attr('string'),
-   email: DS.attr('string')
+   email: DS.attr('string'),
+   imgUrl: DS.attr('string')
 });
 
 app.ContactSerializer = DS.RESTSerializer.extend({
@@ -129,7 +130,10 @@ app.ContactController = Ember.Controller.extend({
             
             this.transitionToRoute('contacts');
         }
-    }
+    },
+    imgUrl: Ember.computed('model', function () {
+        return '/img/' + this.get('model').get('imgUrl');
+    })
 });
 
 app.NewRoute = Ember.Route.extend({
