@@ -53,7 +53,7 @@
 
 <p>As I was planning and learning the frameworks I didn't already know, I came across a tutorial on <a href="https://code.tutsplus.com/courses/comparing-front-end-frameworks">Tuts+ by Andrew Burgess</a> that covered the frameworks I chose to compare. It turns out that he also used a contact application. I had almost given up on my project at this point but, after watching the videos that had been published a year ago, I decided to continue with my project since his tutorial only covered the basic CRUD operations and were using older versions of Ember and React. I wanted to go beyond where he left off and I wanted the project to continue to grow with new features, more frameworks, and continuous improvements.</p>
 
-<p>[image]</p>
+<p><img src="images/list-screenshot.jpg"></p>
 
 <h2>
 <a id="the-application" class="anchor" href="#the-application" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>The application</h2>
@@ -62,7 +62,7 @@
 
 <p>The server-side code is a Node/Express application that handles the API and serving the public pages for each application. I wanted to minimize discrepancies in the timing results for the page loads so I designed the system so that each framework runs off the same server-side application. I also wanted to reduce any latency on the server and decided to forgo a database for the moment. The data, I chose to use superheros, is located within a JavaScript object on the server which is sent via the API to each framework.</p>
 
-<p>[image]</p>
+<p><img src="images/structure-diagram2.png" style="padding: 20px 0;"></p>
 
 <p>Each framework is using the same CSS and image files located in the public directory and each has a folder containing their app's <code>index.html</code>, <code>app.js</code>, and other needed files. This means that I wouldn't have to stop the server, edit some code, and restart the server to switch between each framework. I would access each framework by going to <code>localhost/angular/</code> for example.</p>
 
@@ -205,7 +205,7 @@
 
 <p>I wanted to note that the following results are preliminary. The code is not fully optimized and it is not running on a production server. While the code is being minified the transfer itself is not being compressed. I acknowledge that there are many improvements to be made with the code and host configurations. The timing results were obtained using <a href="http://www.webpagetest.org/">webpagetest.org</a>.</p>
 
-<p>[image]</p>
+<p><img src="images/graph-load-times.jpg"></p>
 
 <h2>
 <a id="thing-i-learned" class="anchor" href="#thing-i-learned" aria-hidden="true"><span aria-hidden="true" class="octicon octicon-link"></span></a>Thing I learned</h2>
